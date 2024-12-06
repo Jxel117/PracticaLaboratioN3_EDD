@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "canton": "Paltas",
+        "apellidoPaterno": "Guerrero",
+        "apellidoMaterno": "Pesantez",
+        "integrantes": 4,
+        "tieneGenerador": true
+    },
+    {
+        "id": 2,
+        "canton": "Gonzanama",
+        "apellidoPaterno": "Herrera",
+        "apellidoMaterno": "Matailo",
+        "integrantes": 4,
+        "tieneGenerador": true
+    },
+    {
+        "id": 3,
+        "canton": "Loja",
+        "apellidoPaterno": "Chamba",
+        "apellidoMaterno": "Zaragocin",
+        "integrantes": 5,
+        "tieneGenerador": true
+    },
+    {
+        "id": 4,
+        "canton": "Gonzanama",
+        "apellidoPaterno": "Tapia",
+        "apellidoMaterno": "Pinta",
+        "integrantes": 8,
+        "tieneGenerador": true
+    },
+    {
+        "id": 5,
+        "canton": "Puyango",
+        "apellidoPaterno": "Calva",
+        "apellidoMaterno": "Camacho",
+        "integrantes": 4,
+        "tieneGenerador": true
+    },
+    {
+        "id": 6,
+        "canton": "Saraguro",
+        "apellidoPaterno": "Valencia",
+        "apellidoMaterno": "Messi",
+        "integrantes": 6,
+        "tieneGenerador": true
+    },
+    {
+        "id": 7,
+        "canton": "Gonzanama",
+        "apellidoPaterno": "Matailo",
+        "apellidoMaterno": "Mora",
+        "integrantes": 9,
+        "tieneGenerador": true
+    },
+    {
+        "id": 8,
+        "canton": "Loja",
+        "apellidoPaterno": "Gonzales",
+        "apellidoMaterno": "Ruiz",
+        "integrantes": 5,
+        "tieneGenerador": true
+    },
+    {
+        "id": 9,
+        "canton": "Paltas",
+        "apellidoPaterno": "Ronaldo",
+        "apellidoMaterno": "Tandazo",
+        "integrantes": 6,
+        "tieneGenerador": true
+    },
+    {
+        "id": 10,
+        "canton": "Saraguro",
+        "apellidoPaterno": "Arias",
+        "apellidoMaterno": "Castillo",
+        "integrantes": 3,
+        "tieneGenerador": true
+    },
+    {
+        "id": 11,
+        "canton": "Catamayo",
+        "apellidoPaterno": "Jaramillo",
+        "apellidoMaterno": "Cruz",
+        "integrantes": 5,
+        "tieneGenerador": true
+    },
+    {
+        "id": 12,
+        "canton": "Puyango",
+        "apellidoPaterno": "Guaman",
+        "apellidoMaterno": "Zambrano",
+        "integrantes": 6,
+        "tieneGenerador": true
+    },
+    {
+        "id": 13,
+        "canton": "Loja",
+        "apellidoPaterno": "Salcedo",
+        "apellidoMaterno": "Lopez",
+        "integrantes": 8,
+        "tieneGenerador": true
+    },
+    {
+        "id": 14,
+        "canton": "Calvas",
+        "apellidoPaterno": "Betancourt",
+        "apellidoMaterno": "Aguirre",
+        "integrantes": 8,
+        "tieneGenerador": true
+    },
+    {
+        "id": 15,
+        "canton": "Zapotillo",
+        "apellidoPaterno": "Guyllas",
+        "apellidoMaterno": "Poma",
+        "integrantes": 5,
+        "tieneGenerador": true
+    }
+]
