@@ -1,0 +1,248 @@
+{% extends "template.html" %}
+{% block content %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<!-- Quill.js CSS -->
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+
+<!-- Quill.js JavaScript -->
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function url_change() {
+            var url = "http://localhost:5000/admin/familia/bus/";
+            var texto = $("#texto").val();
+            var criterio = $("#criterio").val();
+            url += criterio + "/" + texto;
+            $("#btn").attr("href", url);
+        }
+        $("#texto").keyup(function () {
+            url_change();
+        });
+        $("#criterio").change(function () {
+            url_change();
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        function actualizarUrlOrden() {
+            // Obtén los valores seleccionados usando las IDs correctas
+            
+            const criterio = $("#criterio").val();
+            const metodo = $("#metodo").val();
+            const orden = $("#orden").val(); // Asegúrate de que #orden existe
+    
+            // Valida que los valores no estén vacíos antes de construir la URL
+            if (criterio && metodo && orden) {
+                const url = `/admin/familia/list/${criterio}/${orden}/${metodo}`;
+                $("#ordenar").attr("href", url);
+            } else {
+                // Muestra un mensaje de error en consola si algo falla
+                console.error("Faltan parámetros para construir la URL.");
+                $("#ordenar").attr("href", "#"); // No permite acción si falta algo
+            }
+        }
+    
+        // Llama a la función cuando los valores cambian
+        $("#criterio, #metodo, #orden").change(function () {
+            actualizarUrlOrden();
+        });
+    
+        // Inicializa la URL al cargar la página
+        actualizarUrlOrden();
+    });
+</script>
+<script>
+    $(document).ready(function () {
+    function buscarFamilia() {
+        const texto = $("#texto").val(); // Texto a buscar
+        const tipo = $("#tipo").val(); // Tipo de búsqueda
+
+        // Validación simple
+        if (!texto.trim()) {
+            alert("Por favor, ingrese un texto para buscar.");
+            return;
+        }
+
+        // Construir la URL de búsqueda
+        const url = `/admin/familia/bus/${tipo}/${texto}`;
+
+        // Hacer la solicitud a la API
+        $.ajax({
+            url: url,
+            method: "GET",
+            success: function (response) {
+                // Limpiar los resultados anteriores
+                $("#tabla-resultados").empty();
+
+                // Verificar si hay resultados
+                if (response && response.length > 0) {
+                    response.forEach((familia) => {
+                        // Agregar cada familia como fila a la tabla
+                        $("#tabla-resultados").append(`
+                            <tr>
+                                <td>${familia.id}</td>
+                                <td>${familia.apellidoPaterno}</td>
+                                <td>${familia.apellidoMaterno}</td>
+                                <td>${familia.canton}</td>
+                            </tr>
+                        `);
+                    });
+                } else {
+                    $("#tabla-resultados").append(`
+                        <tr>
+                            <td colspan="4" class="text-center">No se encontraron resultados.</td>
+                        </tr>
+                    `);
+                }
+            },
+            error: function () {
+                alert("Error al realizar la búsqueda. Intente nuevamente.");
+            },
+        });
+    }
+
+    // Evento de búsqueda al hacer clic en el botón
+    $("#buscar").click(function () {
+        buscarFamilia();
+    });
+
+    // Permitir la búsqueda con Enter en el campo de texto
+    $("#texto").keypress(function (e) {
+        if (e.which === 13) {
+            buscarFamilia();
+        }
+    });
+});
+</script>
+
+<div class="pagetitle text-center">
+    <h1 style="font-weight: bold;">Censo Familias con Generador</h1>
+</div>
+
+<!-- Bloque para mostrar mensajes de flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="alert alert-warning">
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center" style="font-size: 36px; font-weight: bold;">Familias Registradas
+                    </h5>
+                    <div class="table-responsive">
+
+                        <div class="col-lg-10 mb-3">
+                            <div class="input-group">
+                                <select id="tipo" class="form-select" style="max-width: 150px;">
+                                    <option value="apellidopaterno">Apellido Paterno</option>
+                                    <option value="apellidomaterno">Apellido Materno</option>
+                                    <option value="canton">Cantón</option>
+                                </select>
+                                <input type="text" id="texto" class="form-control" placeholder="Busca coincidencias!" />
+                                <button id="buscar" class="btn btn-primary">Buscar</button>
+                            </div>
+                        </div>
+                        <div id="resultados" class="mt-4">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>Cantón</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-resultados">
+                                    <!-- Las filas serán insertadas dinámicamente aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                            
+                            <div class="col-lg-6">
+                                <a href="/admin/familia/register" class="btn btn-success">Nuevo</a>
+                            </div>
+
+                            <!-- ORDENAMIENTO CON LOS TRES METODOS -->
+                            <div class="col-lg-10 mb-3">
+                                <div class="input-group">
+                                    <select id="criterio" class="form-select" style="max-width: 150px;">
+                                        <option value="apellidopaterno">ApellidoP</option>
+                                        <option value="apellidomaterno">ApellidoM</option>
+                                        <option value="canton">Canton</option>
+                                    </select>
+
+                                    <select id="metodo" class="form-select" style="max-width: 150px;">
+                                        <option value="qs">Quick S</option>
+                                        <option value="ms">Merge S</option>
+                                        <option value="ss">Shell S</option>
+                                    </select>
+
+                                    <select id="orden" class="form-select" style="max-width: 150px;">
+                                        <option value="0">A-Z</option>
+                                        <option value="1">Z-A</option>
+                                    </select>
+
+                                    <a id="ordenar" href="#" class="btn btn-success">Ordenar</a>
+                                </div>
+
+                            <table class="table table-striped table-bordered text-center mx-auto"
+                                style="max-width: 1000px;">
+                                <thead>
+                                    <tr>
+                                        <th>Apellido Paterno</th>
+                                        <th>Apellido Materno</th>
+                                        <th>Nro de Integrantes</th>
+                                        <th>Canton</th>
+                                        <th>Generador</th>
+                                        <th>Modificar Familia</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in lista_familia %}
+                                    <tr>
+                                        <td>{{ item.apellidoPaterno }}</td>
+                                        <td>{{ item.apellidoMaterno }}</td>
+                                        <td>{{ item.integrantes }}</td>
+                                        <td>{{ item.canton }}</td>
+                                        <td>{{ 'Sí' if item.tieneGenerador else 'No' }}</td>
+                                        <td>
+                                            <!-- Botón Modificar con icono y fondo verde -->
+                                            <a href="/admin/familia/edit/{{ item.id }}" class="btn btn-success btn-sm">
+                                                <i class="bi bi-pencil-square"></i> Editar
+                                            </a>
+
+                                            <!-- Botón Eliminar con icono y fondo rojo -->
+                                            <form action="/admin/familia/delete/{{ item.id }}" method="post"
+                                                style="display:inline;">
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                    onclick="return confirm('¿Estás seguro de que deseas eliminar esta familia?');">
+                                                    <i class="bi bi-trash"></i> Eliminar
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}
